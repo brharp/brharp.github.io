@@ -1,10 +1,10 @@
----
+Ôªø---
 title: Caching with Apache mod_cache
 ---
 
 # Caching with Apache mod_cache
 
-To satisfy my own curiosity I did some more testing with mod_cache. Hereís my current configuration:
+To satisfy my own curiosity I did some more testing with mod_cache. Here‚Äôs my current configuration:
 
 ```
 <IfModule mod_cache.c>
@@ -30,17 +30,17 @@ ProxyPassReverse / http://example.com/
 Using apache bench (ab) I ran 100,000 requests on a WordPress site with 100 concurrent connections. The average 
 response time was 35 ms, and 99% of requests were served within 60 ms.
 
-The key cache directives are "CacheLock onî and ìCacheStoreExpired on".
+The key cache directives are "CacheLock on‚Äù and ‚ÄúCacheStoreExpired on".
 
 "CacheStoreExpired on" tells the proxy to cache expired resources. When a client requests the resource, the proxy will 
 send a conditional request to the server to revalidate the cached copy. If no newer version is available, it will serve 
 the stale resource from the cache.
 
 "CacheLock on" prevents the proxy from inundating the server with revalidation requests. Without the cache lock, the 
-load test doesnít work. 100 concurrent connections quickly swamp the backend server with revalidation requests, the 
-number of httpd processes spikes, and the load average starts climbing. But with ìCacheLock onî, the proxy only 
+load test doesn‚Äôt work. 100 concurrent connections quickly swamp the backend server with revalidation requests, the 
+number of httpd processes spikes, and the load average starts climbing. But with ‚ÄúCacheLock on‚Äù, the proxy only 
 sends one validation request to the backend server at a time.
 
 I also found "CacheIgnoreCacheControl on" invaluable for testing. When you refresh the browser, it sends 
 a "Cache-Control: no-cache" header to the proxy, so you are never getting a cached response. This directive 
-tells the proxy to ignore the browserís cache control header, so you can actually test the cached responses.
+tells the proxy to ignore the browser‚Äôs cache control header, so you can actually test the cached responses.
