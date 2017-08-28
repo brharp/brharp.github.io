@@ -1,8 +1,7 @@
 ---
 title: Caching with Apache mod_cache
+layout: post
 ---
-
-# Caching with Apache mod_cache
 
 To satisfy my own curiosity I did some more testing with mod_cache. Here�s my current configuration:
 
