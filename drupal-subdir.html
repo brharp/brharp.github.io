@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Drupal Subdir</title>
+  </head>
+  <body>
+    <h1>Drupal Subdir</h1>
+    <h2 id="the-problem">The Problem</h2>
+    <p>How to run Drupal at a subpath of your domain?</p>
+    <h2 id="the-solution">The Solution</h2>
+<pre><code>&lt;VirtualHost *:80&gt;
+  ServerName www.example.com
+  Alias /path /srv/www/htdocs/www.example.com.path/docroot
+  &lt;Location /path&gt;
+    php_admin_value open_basedir "/srv/www/htdocs/www.example.com.path"
+    &lt;IfModule mod_rewrite.c&gt;
+      RewriteEngine on
+      RewriteCond %{REQUEST_FILENAME} !-f
+      RewriteCond %{REQUEST_FILENAME} !-d
+      RewriteCond %{REQUEST_URI} !=/favicon.ico
+      RewriteRule ^/srv/www/htdocs/www.example.com.path/docroot/(.*)$ /path/index.php?q=$1 [L,QSA]
+    &lt;IfModule&gt;
+  &lt;Location&gt;
+&lt;VirtualHost&gt;
+</code></pre>
+  </body>
+</html>
